@@ -42,6 +42,7 @@ function Login() {
         });
         return;
       }
+      //ตรงนี้ก็ไม่ควรจะมี
       if (password.length <= 7) {
         MySwal.fire({
           html: <i>Password must be at least 8 characters long.</i>,
@@ -50,7 +51,7 @@ function Login() {
         return;
       }
     
-      // ตรวจสอบว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่และตัวอักษรพิมพ์เล็ก
+      // ตรวจสอบว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่และตัวอักษรพิมพ์เล็ก จริงๆไม่ควรมี
       if (!/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
         MySwal.fire({
           html: <i>Password must contain both uppercase and lowercase letters.</i>,
@@ -147,6 +148,13 @@ function Login() {
               <Grid item>
                 <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            <Grid container>            
+              <Grid item>
+                <Link href="/forgot" variant="body2">
+                  {"forgot password?"}
                 </Link>
               </Grid>
             </Grid>

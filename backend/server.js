@@ -2,6 +2,7 @@ var express = require('express')
 var cors = require('cors')
 var bodyParser = require('body-parser')
 const mysql = require('mysql2');
+
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 var jsonParser = bodyParser.json()
@@ -15,13 +16,14 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password:'',
-  port:'3307',
+  port:'3306',
   database: 'newbackend'
 });
 
 app.post('/register', jsonParser,function (req, res, next) {
   const password = req.body.password;
-  if (password.length <= 7 || !/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
+  if (password.length <= 7 || !/[a-z]/.test(password) || !/[A-Z]/.test(password)) //ต้องมากกว่า7 มีพิมเล็ก พิมใหญ่
+  {
     res.json({ status: 'error', message: 'Password must be at least 8 characters long and contain both uppercase and lowercase letters.' });
     return;
   }

@@ -50,7 +50,7 @@ export default function Login() {
               'AUthorization':'Bearer '+token
             }
           })
-            .then(response => response.json())
+            .then(response =>response.json())
             .then(data => {
               if (data.status === 'ok') {
               } else {
@@ -70,6 +70,11 @@ export default function Login() {
         localStorage.removeItem('token');
         navigate('/')
      }
+     const handleChangePass = (event) =>{
+      event.preventDefault();
+      navigate('/changepass')
+   }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
@@ -112,6 +117,7 @@ export default function Login() {
               justifyContent="center"
             >
               <Button variant="contained" onClick={handleLogout}>Logout</Button>
+              <Button variant="contained" onClick={handleChangePass}>Changepassword</Button>
             </Stack>
           </Container>
         </Box>

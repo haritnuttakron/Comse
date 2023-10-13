@@ -3,11 +3,11 @@ import Profile from "./profile";
 import {
   Routes,
   Route,
-  Link,
 } from "react-router-dom";
 import Register from "./register";
-import Forgotpass from "./forgotpass";
-
+import Changepass from "./changepass";
+//import Forgotpass from "./forgotpass";
+//<Route path="forgot" element={<Forgotpass/>}/>  
 function App() {
   return (
     <div >
@@ -16,7 +16,7 @@ function App() {
         <Route path="login" element={<Login/>}/> 
         <Route path="profile" element={<Profile/>}/>  
         <Route path="register" element={<Register/>}/>  
-        <Route path="forgot" element={<Forgotpass/>}/>  
+        <Route path="changepass" element={<Changepass/>}/>  
       </Routes>
     </div>
   );

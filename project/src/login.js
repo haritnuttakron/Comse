@@ -42,25 +42,7 @@ function Login() {
         });
         return;
       }
-      //ตรงนี้ก็ไม่ควรจะมี
-      if (password.length <= 7) {
-        MySwal.fire({
-          html: <i>Password must be at least 8 characters long.</i>,
-          icon: 'error',
-        });
-        return;
-      }
-    
-      // ตรวจสอบว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่และตัวอักษรพิมพ์เล็ก จริงๆไม่ควรมี
-      if (!/[a-z]/.test(password) || !/[A-Z]/.test(password)) {
-        MySwal.fire({
-          html: <i>Password must contain both uppercase and lowercase letters.</i>,
-          icon: 'error',
-        });
-        return;
-      }
-      
-    
+         
       const jsonData = {
           email: email,
           password: password
@@ -70,11 +52,12 @@ function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(jsonData),
+        body: JSON.stringify(jsonData),//{ email:เมลที่กรอกไป,iat: เวลาสร้าง }
       })
         .then(response => response.json())
         .then(data => {
           if (data.status === 'ok') {
+            //var token = jwt.sign({ email: users[0].email }, secret);
             localStorage.setItem('token',data.token)
             MySwal.fire({
               html: <i>{data.message}</i>,

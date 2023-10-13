@@ -58,7 +58,9 @@ app.post('/login', jsonParser,function (req, res, next) {
       }
       bcrypt.compare(req.body.password, users[0].password, function (err, isLogin) {
         if(isLogin){
+          //token คือ jwt.sign(payload มีiat=issue at timeหรือ เวลาสร้างด้วย, secretOrPrivateKey, [options, callback])
           var token = jwt.sign({ email: users[0].email }, secret);
+          //โครงสร้าง res.json(body)
           res.json({status : 'ok',message:'login success',token})
         }else{
           res.json({status : 'error',message:'login failed'})
@@ -66,17 +68,60 @@ app.post('/login', jsonParser,function (req, res, next) {
       });
     });
 })
+
 app.post('/authen', jsonParser,function (req, res, next) {
   try{
     const token = req.headers.authorization.split(' ')[1]
-    var decoded = jwt.verify(token, secret);console.log( decoded)
+    var decoded = jwt.verify(token, secret);console.log(decoded)
     res.json({status :'ok',decoded})
   }catch(err){
     res.json({status :'error',message:err.message})
   }
   
 })
+app.post('/changepass', jsonParser,function (req, res, next) {
+  try{
+    const token = req.headers.authorization.split(' ')[1]
+    var decoded = jwt.verify(token, secret);console.log(decoded)
 
+    connection.execute(
+      'SELECT * FROM users WHERE email=?',
+      [decoded.email],
+      function (err, users, fields) {
+        if (err) {
+          res.json({ status: 'error', message: err });
+          return
+        }
+        bcrypt.compare(req.body.password, users[0].password, function (err, isLogin) {
+          if(!isLogin){
+            res.json({status : 'error',message:'Wrong password'})
+            return
+          }
+        });
+      });
+    bcrypt.hash(req.body.newpassword, saltRounds, function (err, hash) {
+      if (err) {
+        res.json({ status: 'error', message: err })
+        return;
+      }
+      console.log(hash);
+      connection.execute(
+        'UPDATE users SET password = ? WHERE email = ?',
+        [hash,decoded.email],
+        function (err, users, fields) {
+          if (err) {
+            res.json({ status: 'error', message: err.message });
+            return
+          }
+          else{
+              res.json({status : 'ok',message:'Password Changed'})
+          }
+        });
+      });
+  }catch(err){
+    res.json({status :'error',message:err.message})
+  }
+})
 
 app.listen(5000, function () {
   console.log('CORS-enabled web server listening on port 5000')

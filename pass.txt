@@ -2,3 +2,14 @@ Th0981234
 hashed $2b$10$ZjAdmQKvcv6gckKVUeMJPeRdzku/xR9vI3UUHHG.ZQkVoOTl6TH2K
 Axa0984321
 hashed    $2b$10$zP1NJ6eFwDM32Vv12BmpW.bqPewNUWlzRl5zFPEChguizENvfSyne
+
+nodemailer
+eqzm hgnn jzrr hqkh
+
+Harit0964167910
+
+1.forgot passwprd คือ เวลาเขาลืม password ต้องยืนยัน email และส่ง password ไปให้ทางemail 
+2.reset password คือ การเปลี่ยนรหัสผ่านใหม่ /
+3.log file คือ เก็บสถานะของ user นั้นว่าได้ล็อคอินตอนไหน log out ตอนไหน ได้ทำการเปลี่ยนรหัสอะไรประมาณนี้
+4.เป็นการเช็คว่าถ้าใส่รหัสผ่านผิดเกิน5ครั้งต้องทำการล็อคอีเมลล์นั้น /
+5.เป็นการเปลี่ยนรหัสผ่านทุกๆ90วันเหมือนfacebookที่ให้ทำการเปลี่ยนรหัสผ่านหรือว่าไม่เปลี่ยน

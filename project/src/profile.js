@@ -52,6 +52,7 @@ export default function Login() {
           })
             .then(response =>response.json())
             .then(data => {
+              console.log(localStorage.getItem('token'))
               if (data.status === 'ok') {
               } else {
                 MySwal.fire({

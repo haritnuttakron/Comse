@@ -14,12 +14,13 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { useEffect } from 'react';
 
-function Changepass() {
+function Resetpass() {
     const navigate = useNavigate();
     const MySwal = withReactContent(Swal);
     useEffect(() => {
         const token = localStorage.getItem('token')
-        fetch("http://localhost:5000/authen", {
+        console.log(token);
+        fetch("http://localhost:5000/authenreset", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -28,13 +29,13 @@ function Changepass() {
           })
             .then(response =>response.json())
             .then(data => {
-              if (data.status === 'ok') {
-              } else {
+              if (data.status !== 'ok') {
                 MySwal.fire({
                   html: <i>{data.message}</i>,
                   icon: 'error'
                 }).then((value) => {
                     localStorage.removeItem('token');
+                    sessionStorage.removeItem('recovery');
                     navigate('/')
                   })
       
@@ -51,16 +52,8 @@ function Changepass() {
   const handleSubmit = (event) => {
     event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const password = data.get('password');
       const newpassword = data.get('Newpassword');
       const confirmpassword = data.get('Confirmpassword');
-      if ( !password) {
-        MySwal.fire({
-          html: <i>Please enter your password</i>,
-          icon: 'error'
-        });
-        return;
-      }
       if ( !newpassword) {
         MySwal.fire({
           html: <i>Please enter your new Password</i>,
@@ -75,8 +68,7 @@ function Changepass() {
         });
         return;
       }
-    
-      // ตรวจสอบว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่และตัวอักษรพิมพ์เล็ก
+          // ตรวจสอบว่ารหัสผ่านมีตัวอักษรพิมพ์ใหญ่และตัวอักษรพิมพ์เล็ก
       if (!/[a-z]/.test(newpassword) || !/[A-Z]/.test(newpassword)) {
         MySwal.fire({
           html: <i>Password must contain both uppercase and lowercase letters.</i>,
@@ -99,11 +91,10 @@ function Changepass() {
         return;
       }
       const jsonData = {
-          password:password,
           newpassword:newpassword
       }
       const token = localStorage.getItem('token')
-      fetch("http://localhost:5000/changepass", {
+      fetch("http://localhost:5000/resetpass", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,6 +110,7 @@ function Changepass() {
               icon: 'success'
             }).then((value) => {
               localStorage.removeItem('token');
+              sessionStorage.removeItem('recovery');
               navigate('/')
             })
           } else {
@@ -147,24 +139,10 @@ function Changepass() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-          Change Password
+          Enter your new Password
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>  
             <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Your Current Password"
-                  type="password"
-                  id="password"
-                  autoComplete="password"
-                  value={inputs.password || ""}
-                  onChange={handleChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   margin="normal"
@@ -204,7 +182,7 @@ function Changepass() {
         </Box>
       </Container>
   </div>
-  )
+)
 }
 
-export default Changepass
+export default Resetpass

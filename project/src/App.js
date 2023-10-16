@@ -7,6 +7,7 @@ import {
 import Register from "./register";
 import Changepass from "./changepass";
 import Forgotpass from "./forgotpass";
+import Resetpass from "./resetpass";
 function App() {
   return (
     <div >
@@ -16,7 +17,8 @@ function App() {
         <Route path="profile" element={<Profile/>}/>  
         <Route path="register" element={<Register/>}/>  
         <Route path="changepass" element={<Changepass/>}/>  
-        <Route path="forgot" element={<Forgotpass/>}/>  
+        <Route path="forgotpass" element={<Forgotpass/>}/>
+        <Route path="resetpass" element={<Resetpass/>}/>  
       </Routes>
     </div>
   );

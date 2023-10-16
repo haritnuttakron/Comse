@@ -7,21 +7,18 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function Login() {
     const navigate = useNavigate();
     const MySwal = withReactContent(Swal);
     const [inputs, setInputs] = useState({});
-    const [loginAttempts, setLoginAttempts] = useState(0);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -41,8 +38,7 @@ function Login() {
           icon: 'error'
         });
         return;
-      }
-         
+      } 
       const jsonData = {
           email: email,
           password: password
@@ -70,12 +66,43 @@ function Login() {
               html: <i>{data.message}</i>,
               icon: 'error'
             })
-  
           }
         })
         .catch(error => console.log('error', error));
       console.log(inputs);
     }
+
+  const navigateToOtp= ()=>{
+    const data = new FormData(document.getElementById('box'));
+    const email= data.get('email');
+    const jsonData = {
+      email: email
+    }
+    fetch("http://localhost:5000/sentotp", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonData),//{ email:เมลที่กรอกไป,iat: เวลาสร้าง }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          MySwal.fire({
+            html: <i>{data.message}</i>,
+            icon: 'success'
+          }).then(() => {
+            sessionStorage.setItem("recovery",email);
+            navigate('/forgotpass')
+          })
+        } else {
+          MySwal.fire({
+            html: <i>{data.message}</i>,
+            icon: 'error'
+          })
+        }
+      })
+  }
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -94,7 +121,7 @@ function Login() {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box id='box' component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -136,7 +163,7 @@ function Login() {
             </Grid>
             <Grid container>            
               <Grid item>
-                <Link href="/forgot" variant="body2">
+                <Link href="/#" variant="body2" onClick={navigateToOtp}>
                   {"forgot password?"}
                 </Link>
               </Grid>
